@@ -1,0 +1,7 @@
+{
+  "name": "Copy of Copy of J.A.R.V.I.S. Éducation Augmentée",
+  "description": "An AI-powered educational chatbot designed for students. It features a C.R.A.F.T. prompt builder for guided creation and a direct chat mode for quick questions, supporting file uploads, voice input, and interactive content generation.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}

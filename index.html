@@ -1,0 +1,62 @@
+
+<!DOCTYPE html>
+<html lang="fr" class="h-full">
+<head>
+    <meta charset="UTF--8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>J.A.R.V.I.S. // Éducation Augmentée</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #0891b2; /* Cyan profond */
+            --primary-color-dark: #0e7490; /* Cyan plus sombre */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #e2e8f0; }
+        ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; }
+
+        .listening { animation: pulse 1.5s infinite; }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(8, 145, 178, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(8, 145, 178, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(8, 145, 178, 0); }
+        }
+
+        .dot-flashing { position: relative; width: 8px; height: 8px; border-radius: 5px; background-color: #94a3b8; color: #94a3b8; animation: dotFlashing 1s infinite linear alternate; animation-delay: .5s; }
+        .dot-flashing::before, .dot-flashing::after { content: ''; display: inline-block; position: absolute; top: 0; }
+        .dot-flashing::before { left: -12px; width: 8px; height: 8px; border-radius: 5px; background-color: #94a3b8; animation: dotFlashing 1s infinite alternate; animation-delay: 0s; }
+        .dot-flashing::after { left: 12px; width: 8px; height: 8px; border-radius: 5px; background-color: #94a3b8; animation: dotFlashing 1s infinite alternate; animation-delay: 1s; }
+        @keyframes dotFlashing { 0% { background-color: #94a3b8; } 50%, 100% { background-color: #cbd5e1; } }
+    </style>
+<script src="https://unpkg.com/mammoth@1.8.0/mammoth.browser.min.js"></script>
+<script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.546.0",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.26.0",
+    "jspdf": "https://aistudiocdn.com/jspdf@^3.0.3",
+    "pdfjs-dist": "https://unpkg.com/pdfjs-dist@4.5.136/build/pdf.mjs"
+  }
+}
+</script>
+</head>
+<body class="h-full flex overflow-hidden">
+    <div id="root" class="h-full w-full"></div>
+</body>
+</html>
