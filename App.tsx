@@ -1,5 +1,4 @@
-
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { PanelLeft } from 'lucide-react';
 import { Header } from './components/Header';
 import { NavSidebar } from './components/NavSidebar';
@@ -10,6 +9,9 @@ import type { Message, AttachedFile, CraftState, Language } from './types';
 import { getSystemInstructions } from './services/geminiService';
 import { GoogleGenAI, GenerateContentResponse, Part } from "@google/genai";
 import { UI_STRINGS } from './constants';
+
+// Remplacer la valeur ci-dessous par votre clé API Gemini
+const API_KEY = "VOTRE_CLÉ_API_ICI"; 
 
 const App: React.FC = () => {
     const [isNavOpen, setIsNavOpen] = useState<boolean>(true);
@@ -27,17 +29,7 @@ const App: React.FC = () => {
         ton: 'Pédagogique et clair',
     });
 
-    const geminiServiceRef = useRef<GoogleGenAI | null>(null);
-
-    useEffect(() => {
-        if(process.env.API_KEY) {
-            geminiServiceRef.current = new GoogleGenAI({ apiKey: process.env.API_KEY });
-        }
-        addJarvisMessage(UI_STRINGS[language].welcome, false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    const addJarvisMessage = (text: string, showDeepenButton: boolean = true) => {
+    const addJarvisMessage = useCallback((text: string, showDeepenButton: boolean = true) => {
         if (!text) return;
         const newMessage: Message = {
             id: Date.now(),
@@ -46,13 +38,19 @@ const App: React.FC = () => {
             showDeepenButton,
         };
         setConversation(prev => [...prev, newMessage]);
-    };
+    }, []);
 
+    useEffect(() => {
+        setConversation([]);
+        addJarvisMessage(UI_STRINGS[language].welcome, false);
+    }, [language, addJarvisMessage]);
+    
     const handleSendMessage = async (userInput: string, attachedFile: AttachedFile | null) => {
         if ((!userInput && !attachedFile) || isProcessing) return;
-        if (!geminiServiceRef.current) {
-            addJarvisMessage(UI_STRINGS[language].apiKeyError, false);
-            return;
+        
+        if (!API_KEY || API_KEY === "VOTRE_CLÉ_API_ICI") {
+             addJarvisMessage("Veuillez intégrer votre clé API Gemini dans le fichier App.tsx.", false);
+             return;
         }
 
         setIsProcessing(true);
@@ -76,6 +74,7 @@ const App: React.FC = () => {
         setConversation(prev => [...prev, typingIndicator]);
 
         try {
+            const ai = new GoogleGenAI({ apiKey: API_KEY });
             const systemInstructionPart = getSystemInstructions(language, mode);
             const history = conversation.map(msg => ({
                 role: msg.role,
@@ -109,7 +108,7 @@ const App: React.FC = () => {
                 promptParts.push(imagePart);
             }
 
-            const response: GenerateContentResponse = await geminiServiceRef.current.models.generateContent({
+            const response: GenerateContentResponse = await ai.models.generateContent({
                 model: 'gemini-2.5-flash',
                 contents: [...history, { role: 'user', parts: promptParts }],
                 config: {
@@ -151,8 +150,6 @@ const App: React.FC = () => {
 
     const handleLanguageChange = (newLang: Language) => {
         setLanguage(newLang);
-        setConversation([]);
-        addJarvisMessage(UI_STRINGS[newLang].languageChange, false);
     };
 
     return (

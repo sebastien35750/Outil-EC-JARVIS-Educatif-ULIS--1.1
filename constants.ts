@@ -1,4 +1,3 @@
-
 import type { Language } from './types';
 
 export const EXPLORER_DATA = [
@@ -68,7 +67,6 @@ export const UI_STRINGS: Record<Language, any> = {
         deepenButton: "Approfondir",
         languageChange: "La langue est maintenant le Français.",
         apiError: "Oups, une erreur cosmique est survenue",
-        apiKeyError: "Clé API Gemini non configurée. Veuillez configurer la variable d'environnement API_KEY.",
         deepenRequest: "Peux-tu développer ou donner plus de détails sur le sujet suivant",
         modeChange: (mode: string) => `Mode ${mode} activé.`
     },
@@ -82,7 +80,6 @@ export const UI_STRINGS: Record<Language, any> = {
         deepenButton: "Deepen",
         languageChange: "Language is now set to English.",
         apiError: "Oops, a cosmic error occurred",
-        apiKeyError: "Gemini API key not configured. Please set the API_KEY environment variable.",
         deepenRequest: "Can you elaborate or give more details on the following topic",
         modeChange: (mode: string) => `${mode} enabled.`
     },
@@ -96,7 +93,6 @@ export const UI_STRINGS: Record<Language, any> = {
         deepenButton: "Profundizar",
         languageChange: "El idioma ahora es Español.",
         apiError: "Vaya, ha ocurrido un error cósmico",
-        apiKeyError: "Clave de API de Gemini no configurada. Por favor, establezca la variable de entorno API_KEY.",
         deepenRequest: "Puedes desarrollar o dar más detalles sobre el siguiente tema",
         modeChange: (mode: string) => `Modo ${mode} activado.`
     },
@@ -110,7 +106,6 @@ export const UI_STRINGS: Record<Language, any> = {
         deepenButton: "Vertiefen",
         languageChange: "Sprache ist jetzt auf Deutsch eingestellt.",
         apiError: "Hoppla, ein kosmischer Fehler ist aufgetreten",
-        apiKeyError: "Gemini-API-Schlüssel nicht konfiguriert. Bitte setzen Sie die Umgebungsvariable API_KEY.",
         deepenRequest: "Können Sie das folgende Thema näher erläutern oder weitere Details dazu geben?",
         modeChange: (mode: string) => `${mode}-Modus aktiviert.`
     },
@@ -124,7 +119,6 @@ export const UI_STRINGS: Record<Language, any> = {
         deepenButton: "Approfondire",
         languageChange: "La lingua è ora impostata sull'Italiano.",
         apiError: "Ops, si è verificato un errore cosmico",
-        apiKeyError: "Chiave API Gemini non configurata. Impostare la variabile d'ambiente API_KEY.",
         deepenRequest: "Puoi elaborare o fornire maggiori dettagli sul seguente argomento",
         modeChange: (mode: string) => `Modalità ${mode} attivata.`
     }
