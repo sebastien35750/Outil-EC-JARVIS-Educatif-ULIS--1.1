@@ -45,9 +45,6 @@ const App: React.FC = () => {
     
     const handleSendMessage = async (userInput: string, attachedFile: AttachedFile | null) => {
         if ((!userInput && !attachedFile) || isProcessing) return;
-        
-        // FIX: The API key check was removed to resolve a TypeScript error and align with guidelines. 
-        // The API key is assumed to be available via process.env.API_KEY.
 
         setIsProcessing(true);
         
@@ -69,9 +66,17 @@ const App: React.FC = () => {
         const typingIndicator: Message = { id: Date.now() + 1, role: 'model', content: '', isTyping: true };
         setConversation(prev => [...prev, typingIndicator]);
 
+        const apiKey = process.env.VITE_API_KEY;
+
+        if (!apiKey) {
+            setConversation(prev => prev.filter(msg => !msg.isTyping));
+            addJarvisMessage("ERREUR DE CONFIGURATION : Clé API introuvable. Veuillez vérifier que la variable d'environnement `VITE_API_KEY` est correctement configurée dans les paramètres de votre projet sur Vercel et que vous avez bien redéployé l'application après l'avoir ajoutée.", false);
+            setIsProcessing(false);
+            return;
+        }
+
         try {
-            // FIX: Per coding guidelines, initialize the client with the API key from process.env.API_KEY.
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+            const ai = new GoogleGenAI({ apiKey });
             const systemInstructionPart = getSystemInstructions(language, mode);
             const history = conversation.map(msg => ({
                 role: msg.role,
