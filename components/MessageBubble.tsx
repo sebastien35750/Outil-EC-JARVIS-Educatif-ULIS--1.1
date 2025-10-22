@@ -1,12 +1,14 @@
 
 import React from 'react';
-import { FileText, Image as ImageIcon } from 'lucide-react';
+import { FileText } from 'lucide-react';
 import type { Message, Language } from '../types';
 import { UI_STRINGS } from '../constants';
+import { SuggestionPrompts } from './SuggestionPrompts';
 
 interface MessageBubbleProps {
     message: Message;
     onDeepen: (topic: string) => void;
+    onSuggestionClick: (suggestion: string) => void;
     language: Language;
 }
 
@@ -41,7 +43,7 @@ const UserMessageContent: React.FC<{ message: Message }> = ({ message }) => (
     </div>
 );
 
-const JarvisMessageContent: React.FC<{ message: Message; onDeepen: (topic: string) => void; language: Language }> = ({ message, onDeepen, language }) => (
+const JarvisMessageContent: React.FC<{ message: Message; onDeepen: (topic: string) => void; onSuggestionClick: (suggestion: string) => void; language: Language }> = ({ message, onDeepen, onSuggestionClick, language }) => (
     <div className="flex flex-col items-start max-w-[85%]">
         <div className="flex items-end gap-3">
             <JarvisAvatar />
@@ -57,11 +59,14 @@ const JarvisMessageContent: React.FC<{ message: Message; onDeepen: (topic: strin
                 {UI_STRINGS[language].deepenButton}
             </button>
         )}
+        {message.suggestions && message.suggestions.length > 0 && (
+            <SuggestionPrompts suggestions={message.suggestions} onSuggestionClick={onSuggestionClick} />
+        )}
     </div>
 );
 
 
-export const MessageBubble: React.FC<MessageBubbleProps> = ({ message, onDeepen, language }) => {
+export const MessageBubble: React.FC<MessageBubbleProps> = ({ message, onDeepen, onSuggestionClick, language }) => {
     const isUser = message.role === 'user';
 
     if (message.isTyping) {
@@ -73,7 +78,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({ message, onDeepen,
             {isUser ? (
                 <UserMessageContent message={message} />
             ) : (
-                <JarvisMessageContent message={message} onDeepen={onDeepen} language={language} />
+                <JarvisMessageContent message={message} onDeepen={onDeepen} onSuggestionClick={onSuggestionClick} language={language} />
             )}
         </div>
     );

@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback, useEffect } from 'react';
 import { PanelLeft } from 'lucide-react';
 import { Header } from './components/Header';
@@ -27,13 +26,14 @@ const App: React.FC = () => {
         ton: 'Pédagogique et clair',
     });
 
-    const addJarvisMessage = useCallback((text: string, showDeepenButton: boolean = true) => {
-        if (!text) return;
+    const addJarvisMessage = useCallback((text: string, showDeepenButton: boolean = true, suggestions?: string[]) => {
+        if (!text && (!suggestions || suggestions.length === 0)) return;
         const newMessage: Message = {
             id: Date.now(),
             role: 'model',
             content: text,
             showDeepenButton,
+            suggestions,
         };
         setConversation(prev => [...prev, newMessage]);
     }, []);
@@ -47,6 +47,9 @@ const App: React.FC = () => {
         if ((!userInput && !attachedFile) || isProcessing) return;
 
         setIsProcessing(true);
+        
+        // Hide suggestions on previous messages when a new message is sent.
+        setConversation(prev => prev.map(msg => ({ ...msg, suggestions: undefined })));
         
         let displayMessage: string;
         if (mode === 'craft') {
@@ -66,11 +69,11 @@ const App: React.FC = () => {
         const typingIndicator: Message = { id: Date.now() + 1, role: 'model', content: '', isTyping: true };
         setConversation(prev => [...prev, typingIndicator]);
 
-        const apiKey = process.env.VITE_API_KEY;
+        const apiKey = process.env.API_KEY;
 
         if (!apiKey) {
             setConversation(prev => prev.filter(msg => !msg.isTyping));
-            addJarvisMessage("ERREUR DE CONFIGURATION : Clé API introuvable. Veuillez vérifier que la variable d'environnement `VITE_API_KEY` est correctement configurée dans les paramètres de votre projet sur Vercel et que vous avez bien redéployé l'application après l'avoir ajoutée.", false);
+            addJarvisMessage(UI_STRINGS[language].apiKeyError, false);
             setIsProcessing(false);
             return;
         }
@@ -118,7 +121,27 @@ const App: React.FC = () => {
                 },
             });
 
-            const jarvisResponseText = response.text.replace(/\*/g, '');
+            const rawResponseText = response.text;
+            const separator = '||SUGGESTIONS||';
+            let jarvisResponseText = rawResponseText;
+            let suggestions: string[] | undefined = undefined;
+
+            if (rawResponseText.includes(separator)) {
+                const parts = rawResponseText.split(separator);
+                jarvisResponseText = parts[0].trim();
+                const suggestionsJson = parts[1];
+                try {
+                    const parsedSuggestions = JSON.parse(suggestionsJson);
+                    if (Array.isArray(parsedSuggestions) && parsedSuggestions.every(s => typeof s === 'string')) {
+                        suggestions = parsedSuggestions;
+                    }
+                } catch (e) {
+                    console.error("Failed to parse suggestions JSON:", e);
+                    jarvisResponseText = rawResponseText;
+                }
+            }
+
+            jarvisResponseText = jarvisResponseText.replace(/\*/g, '');
 
             const codeBlockRegex = /```html\n([\s\S]*?)\n```/;
             const match = jarvisResponseText.match(codeBlockRegex);
@@ -129,10 +152,12 @@ const App: React.FC = () => {
                 setIframeContent(htmlContent);
                 setIsCanvasOpen(true);
                 if (textBeforeCode) {
-                    addJarvisMessage(textBeforeCode, true);
+                    addJarvisMessage(textBeforeCode, true, suggestions);
+                } else if (suggestions && suggestions.length > 0) {
+                    addJarvisMessage(UI_STRINGS[language].interactiveContentMessage, false, suggestions);
                 }
             } else {
-                addJarvisMessage(jarvisResponseText, true);
+                addJarvisMessage(jarvisResponseText, true, suggestions);
             }
         } catch (error) {
             console.error("Gemini API error:", error);
@@ -150,6 +175,14 @@ const App: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [language, handleSendMessage]);
 
+    const handleSuggestionClick = useCallback((suggestion: string) => {
+        if (mode !== 'chat') {
+            setMode('chat');
+        }
+        handleSendMessage(suggestion, null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [mode, handleSendMessage]);
+
     const handleLanguageChange = (newLang: Language) => {
         setLanguage(newLang);
     };
@@ -163,7 +196,7 @@ const App: React.FC = () => {
             <div className="flex-1 flex flex-col h-full relative">
                 <button
                     onClick={() => setIsNavOpen(!isNavOpen)}
-                    className="absolute top-4 left-4 z-20 p-2 text-slate-500 hover:text-cyan-600 rounded-full bg-white/50 backdrop-blur-sm"
+                    className="absolute top-4 left-4 z-20 p-2 text-slate-500 hover:text-cyan-700 rounded-full bg-white/50 backdrop-blur-sm"
                     title={isNavOpen ? "Fermer la navigation" : "Ouvrir la navigation"}
                 >
                     <PanelLeft className="h-6 w-6" />
@@ -178,6 +211,7 @@ const App: React.FC = () => {
                     <ChatHistory
                         conversation={conversation}
                         onDeepen={handleDeepen}
+                        onSuggestionClick={handleSuggestionClick}
                         language={language}
                     />
                     <InputArea

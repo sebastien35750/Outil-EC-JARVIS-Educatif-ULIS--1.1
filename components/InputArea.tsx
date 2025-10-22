@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from 'react';
 import { Paperclip, Mic, Send, X, FileText, Image as ImageIcon } from 'lucide-react';
 import { CraftBuilder } from './CraftBuilder';
@@ -74,7 +73,7 @@ export const InputArea: React.FC<InputAreaProps> = ({ isProcessing, onSendMessag
                 <span className="text-sm font-medium text-slate-600 mr-3">{UI_STRINGS[language].craftMode}</span>
                 <label htmlFor="mode-toggle" className="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox" id="mode-toggle" className="sr-only peer" checked={mode === 'chat'} onChange={() => onModeChange(mode === 'craft' ? 'chat' : 'craft')} />
-                    <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-cyan-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-cyan-600"></div>
+                    <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-cyan-400 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-cyan-700"></div>
                 </label>
                 <span className="text-sm font-medium text-slate-600 ml-3">{UI_STRINGS[language].chatMode}</span>
             </div>
@@ -83,8 +82,8 @@ export const InputArea: React.FC<InputAreaProps> = ({ isProcessing, onSendMessag
                 <CraftBuilder craftState={craftState} onCraftStateChange={onCraftStateChange} language={language} />
             )}
 
-            <div className="flex items-center bg-slate-100 rounded-xl p-2 border border-slate-300 focus-within:ring-2 focus-within:ring-cyan-500">
-                <button onClick={() => fileInputRef.current?.click()} className="p-2 text-slate-500 hover:text-cyan-600 transition-colors rounded-full" title="Joindre un fichier">
+            <div className="flex items-center bg-slate-100 rounded-xl p-2 border border-slate-300 focus-within:ring-2 focus-within:ring-cyan-600">
+                <button onClick={() => fileInputRef.current?.click()} className="p-2 text-slate-500 hover:text-cyan-700 transition-colors rounded-full" title="Joindre un fichier">
                     <Paperclip className="h-5 w-5" />
                 </button>
                 <textarea
@@ -96,10 +95,10 @@ export const InputArea: React.FC<InputAreaProps> = ({ isProcessing, onSendMessag
                     placeholder={mode === 'craft' ? UI_STRINGS[language].inputPlaceholderCraft : UI_STRINGS[language].inputPlaceholderChat}
                     disabled={isProcessing}
                 />
-                <button onClick={handleMicClick} className={`p-2 text-slate-500 hover:text-cyan-600 transition-colors rounded-full ${isListening ? 'text-red-500' : ''}`} title="Saisie vocale">
+                <button onClick={handleMicClick} className={`p-2 text-slate-500 hover:text-cyan-700 transition-colors rounded-full ${isListening ? 'text-red-500' : ''}`} title="Saisie vocale">
                     <Mic className="h-5 w-5" />
                 </button>
-                <button onClick={handleSend} disabled={isProcessing || (!userInput && !attachedFile)} className="p-2 bg-cyan-600 text-white rounded-lg hover:bg-cyan-700 transition-colors ml-2 disabled:bg-cyan-400" title="Envoyer">
+                <button onClick={handleSend} disabled={isProcessing || (!userInput && !attachedFile)} className="p-2 bg-cyan-800 text-white rounded-lg hover:bg-cyan-900 transition-colors ml-2 disabled:bg-cyan-600" title="Envoyer">
                     <Send className="h-5 w-5" />
                 </button>
             </div>

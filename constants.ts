@@ -67,8 +67,10 @@ export const UI_STRINGS: Record<Language, any> = {
         deepenButton: "Approfondir",
         languageChange: "La langue est maintenant le Français.",
         apiError: "Oups, une erreur cosmique est survenue",
+        apiKeyError: "Erreur de configuration : La clé API est manquante. Pour que je puisse fonctionner, l'administrateur de l'application doit configurer la variable d'environnement `API_KEY` dans les paramètres du projet. Une fois ajoutée, l'application devra être redéployée.",
         deepenRequest: "Peux-tu développer ou donner plus de détails sur le sujet suivant",
-        modeChange: (mode: string) => `Mode ${mode} activé.`
+        modeChange: (mode: string) => `Mode ${mode} activé.`,
+        interactiveContentMessage: "Voici votre contenu interactif. Vous pouvez aussi essayer l'une de ces actions :"
     },
     en: {
         welcome: "Hello! I'm ready. Use C.R.A.F.T. mode for guided creation or Direct Chat mode to talk.",
@@ -80,8 +82,10 @@ export const UI_STRINGS: Record<Language, any> = {
         deepenButton: "Deepen",
         languageChange: "Language is now set to English.",
         apiError: "Oops, a cosmic error occurred",
+        apiKeyError: "Configuration Error: The API key is missing. For me to work, the application administrator needs to configure the `API_KEY` environment variable in the project settings. Once added, the application will need to be redeployed.",
         deepenRequest: "Can you elaborate or give more details on the following topic",
-        modeChange: (mode: string) => `${mode} enabled.`
+        modeChange: (mode: string) => `${mode} enabled.`,
+        interactiveContentMessage: "Here is your interactive content. You can also try one of these actions:"
     },
     es: {
         welcome: "¡Hola! Estoy listo. Usa el modo C.R.A.F.T. para creación guiada o el modo Chat Directo para hablar.",
@@ -93,8 +97,10 @@ export const UI_STRINGS: Record<Language, any> = {
         deepenButton: "Profundizar",
         languageChange: "El idioma ahora es Español.",
         apiError: "Vaya, ha ocurrido un error cósmico",
+        apiKeyError: "Error de configuración: Falta la clave de API. Para que pueda funcionar, el administrador de la aplicación debe configurar la variable de entorno `API_KEY` en la configuración del proyecto. Una vez añadida, la aplicación deberá ser redesplegada.",
         deepenRequest: "Puedes desarrollar o dar más detalles sobre el siguiente tema",
-        modeChange: (mode: string) => `Modo ${mode} activado.`
+        modeChange: (mode: string) => `Modo ${mode} activado.`,
+        interactiveContentMessage: "Aquí está tu contenido interactivo. También puedes probar una de estas acciones:"
     },
     de: {
         welcome: "Hallo! Ich bin bereit. Verwende den C.R.A.F.T.-Modus für geführte Erstellung oder den Direkt-Chat-Modus zum Sprechen.",
@@ -106,8 +112,10 @@ export const UI_STRINGS: Record<Language, any> = {
         deepenButton: "Vertiefen",
         languageChange: "Sprache ist jetzt auf Deutsch eingestellt.",
         apiError: "Hoppla, ein kosmischer Fehler ist aufgetreten",
+        apiKeyError: "Konfigurationsfehler: Der API-Schlüssel fehlt. Damit ich arbeiten kann, muss der Anwendungsadministrator die Umgebungsvariable `API_KEY` in den Projekteinstellungen konfigurieren. Nach dem Hinzufügen muss die Anwendung neu bereitgestellt werden.",
         deepenRequest: "Können Sie das folgende Thema näher erläutern oder weitere Details dazu geben?",
-        modeChange: (mode: string) => `${mode}-Modus aktiviert.`
+        modeChange: (mode: string) => `${mode}-Modus aktiviert.`,
+        interactiveContentMessage: "Hier ist Ihr interaktiver Inhalt. Sie können auch eine dieser Aktionen ausprobieren:"
     },
     it: {
         welcome: "Ciao! Sono pronto. Usa la modalità C.R.A.F.T. per la creazione guidata o la modalità Chat Diretta per parlare.",
@@ -119,7 +127,9 @@ export const UI_STRINGS: Record<Language, any> = {
         deepenButton: "Approfondire",
         languageChange: "La lingua è ora impostata sull'Italiano.",
         apiError: "Ops, si è verificato un errore cosmico",
+        apiKeyError: "Errore di configurazione: la chiave API è mancante. Affinché io possa funzionare, l'amministratore dell'applicazione deve configurare la variabile d'ambiente `API_KEY` nelle impostazioni del progetto. Una volta aggiunta, l'applicazione dovrà essere ridistribuita.",
         deepenRequest: "Puoi elaborare o fornire maggiori dettagli sul seguente argomento",
-        modeChange: (mode: string) => `Modalità ${mode} attivata.`
+        modeChange: (mode: string) => `Modalità ${mode} attivata.`,
+        interactiveContentMessage: "Ecco il tuo contenuto interattivo. Puoi anche provare una di queste azioni:"
     }
 };

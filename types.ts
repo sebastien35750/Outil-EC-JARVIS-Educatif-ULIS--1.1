@@ -15,6 +15,7 @@ export interface Message {
   isTyping?: boolean;
   attachment?: AttachedFile;
   showDeepenButton?: boolean;
+  suggestions?: string[];
 }
 
 export interface CraftState {
