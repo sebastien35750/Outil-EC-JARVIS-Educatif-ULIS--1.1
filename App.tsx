@@ -1,3 +1,4 @@
+
 import React, { useState, useCallback, useEffect } from 'react';
 import { PanelLeft } from 'lucide-react';
 import { Header } from './components/Header';
@@ -9,9 +10,6 @@ import type { Message, AttachedFile, CraftState, Language } from './types';
 import { getSystemInstructions } from './services/geminiService';
 import { GoogleGenAI, GenerateContentResponse, Part } from "@google/genai";
 import { UI_STRINGS } from './constants';
-
-// Remplacer la valeur ci-dessous par votre clé API Gemini
-const API_KEY = "VOTRE_CLÉ_API_ICI"; 
 
 const App: React.FC = () => {
     const [isNavOpen, setIsNavOpen] = useState<boolean>(true);
@@ -48,10 +46,8 @@ const App: React.FC = () => {
     const handleSendMessage = async (userInput: string, attachedFile: AttachedFile | null) => {
         if ((!userInput && !attachedFile) || isProcessing) return;
         
-        if (!API_KEY || API_KEY === "VOTRE_CLÉ_API_ICI") {
-             addJarvisMessage("Veuillez intégrer votre clé API Gemini dans le fichier App.tsx.", false);
-             return;
-        }
+        // FIX: The API key check was removed to resolve a TypeScript error and align with guidelines. 
+        // The API key is assumed to be available via process.env.API_KEY.
 
         setIsProcessing(true);
         
@@ -74,7 +70,8 @@ const App: React.FC = () => {
         setConversation(prev => [...prev, typingIndicator]);
 
         try {
-            const ai = new GoogleGenAI({ apiKey: API_KEY });
+            // FIX: Per coding guidelines, initialize the client with the API key from process.env.API_KEY.
+            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
             const systemInstructionPart = getSystemInstructions(language, mode);
             const history = conversation.map(msg => ({
                 role: msg.role,
